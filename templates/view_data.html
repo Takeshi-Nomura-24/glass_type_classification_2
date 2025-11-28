@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+    <div class="container pt-5">
+        <div class="row">
+
+        <h1>ガラス製品種類推測結果一覧</h1>
+        
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            {# 💡 CSVエクスポートボタンを追加 #}
+            <a href="{% url 'predict:exportcsv' %}" class="btn btn-success">
+                💾 CSVファイルとしてダウンロード
+            </a>
+            {# homeへ戻るボタンも追加 #}
+            <a href='{% url 'predict:home' %}' class='btn btn-warning'>入力画面に戻る</a>
+        </div>
+
+        {# テーブルをレスポンシブにし、Bootstrapのクラス名を見やすく調整 #}
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered caption-top">
+                <caption class="text-dark">データベースに保存された全予測履歴 (新しい順に表示)</caption>
+                <thead class="table-dark text-center">
+                    <tr>
+                    <th scope="col">ID</th>
+                    {# 💡 予測日時を追加 #}
+                    <th scope="col">予測日時</th>
+                    <th scope="col">RI</th>
+                    <th scope="col">Na</th>
+                    <th scope="col">Mg</th>
+                    <th scope="col">Al</th>
+                    <th scope="col">Si</th>
+                    <th scope="col">K</th>
+                    <th scope="col">Ca</th>
+                    <th scope="col">Ba</th>
+                    <th scope="col">Fe</th>
+                    <th scope="col">分類結果</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                {% for data in dataset %}
+                    <tr>
+                    <th scope="row">{{ data.id }}</th>
+                    {# 💡 予測日時を表示し、日時フォーマットを適用 #}
+                    <td>{{ data.created_at|date:"Y/m/d H:i" }}</td>
+                    <td>{{ data.RI|floatformat:"3" }}</td>
+                    <td>{{ data.Na|floatformat:"2" }}</td>
+                    <td>{{ data.Mg|floatformat:"2" }}</td>
+                    <td>{{ data.Al|floatformat:"2" }}</td>
+                    <td>{{ data.Si|floatformat:"2" }}</td>
+                    <td>{{ data.K|floatformat:"2" }}</td>
+                    <td>{{ data.Ca|floatformat:"2" }}</td>
+                    <td>{{ data.Ba|floatformat:"2" }}</td>
+                    <td>{{ data.Fe|floatformat:"2" }}</td>
+                    {# 💡 分類結果を強調 #}
+                    <td><strong>{{ data.classification }}</strong></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="12">まだ予測結果が保存されていません。入力画面から予測を実行してください。</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        </div>
+    </div>
+{% endblock %}
+

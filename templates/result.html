@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+    <div class="container mt-2">
+        <div class="row justify-content-evenly align-items-center">
+            <div class="col-10"> 
+                
+                {# 💡 エラーメッセージの表示 #}
+                {% if error %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        <h2>⚠️ システムエラーまたは入力エラー</h2>
+                        <p>{{ error }}</p>
+                    </div>
+                {% else %}
+                    {# 予測結果の表示 (エラーがない場合のみ) #}
+                    <div class="container text-center text-dark" >
+                        <h1>製品種類予測結果<br>↓↓↓</br></h1>
+                    </div>
+                    <div class="container text-center bg-primary text-white border p-3">
+                        <h2 class="blink">{{ ans }}</h2>
+                    </div>
+                {% endif %}
+                
+            </div>
+        </div>
+
+        {# --- 入力値の確認テーブルを追加 --- #}
+        {% if request.POST and not error %}
+        <div class="container my-4">
+            <h2 class="text-center">🔍 入力されたパラメータ</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>RI</th><th>Na</th><th>Mg</th><th>Al</th><th>Si</th>
+                            <th>K</th><th>Ca</th><th>Ba</th><th>Fe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ request.POST.RI }}</td>
+                            <td>{{ request.POST.Na }}</td>
+                            <td>{{ request.POST.Mg }}</td>
+                            <td>{{ request.POST.Al }}</td>
+                            <td>{{ request.POST.Si }}</td>
+                            <td>{{ request.POST.K }}</td>
+                            <td>{{ request.POST.Ca }}</td>
+                            <td>{{ request.POST.Ba }}</td>
+                            <td>{{ request.POST.Fe }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        {# --- 入力値の確認テーブル ここまで --- #}
+
+        <div class="container my-2 text-center">
+            <div class='container'>
+                <h1>製品の種類 (全分類)</h1>
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">製品番号</th>
+                            <th scope="col">製品種類</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">1</th><td>建物の窓（フロート処理済み）</td></tr>
+                        <tr><th scope="row">2</th><td>建物の窓（非フロート処理）</td></tr>
+                        <tr><th scope="row">3</th><td>車両の窓（フロート処理済み）</td></tr>
+                        <tr><th scope="row">4</th><td>車両の窓（非フロート処理）</td></tr>
+                        <tr><th scope="row">5</th><td>コンテナ</td></tr>
+                        <tr><th scope="row">6</th><td>食器</td></tr>
+                        <tr><th scope="row">7</th><td>ヘッドランプ</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            {# エラー表示や入力値の表示に関わらず、ナビゲーションボタンは常に表示 #}
+            <a href='{% url 'predict:home' %}' class='btn btn-warning mx-2'>入力画面に戻る</a>
+            <a href='{% url 'predict:view_data' %}' class='btn btn-info mx-2'>全データ一覧へ</a>
+        </div>
+    </div>
+{% endblock %}

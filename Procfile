@@ -1,0 +1,1 @@
+web: gunicorn glass_type_classification_2.wsgi:application

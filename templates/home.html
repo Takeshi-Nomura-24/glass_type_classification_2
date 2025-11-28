@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# 💡 CSSブロックにフッター分の余白を追加 #}
+{% block extra_style %}
+<style>
+/* 画面の最下部に十分な余白（パディング）を追加し、fixed-bottomのフッターとコンテンツの干渉を防ぐ */
+.content-padding-bottom {
+    padding-bottom: 80px; /* フッターの高さ（約50px）よりも余裕を持たせた値 */
+}
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class='container py-2'>
+        <div class='bg-light border border-primary border-2 p-4 rounded'>
+            <h1 class='display-4' style='color: indigo;'><strong>Welcome to Glass Classification!!!</strong></h1>
+            <p class='lead'>これはガラスの屈折率と成分を入力することで製品の種類を推測するためのプログラムです。</p>
+            <hr class='my-3'>
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>入力にエラーがあります。</strong> 全ての項目に数値を入力したか確認してください。
+                </div>
+            {% endif %}
+            <ul>
+                <li>下記の入力フォームに必要パラーメータを入力して推測を実行してください。</li>
+                <li>ナトリウム、マグネシウム等の化学組成は、対応する酸化物の重量パーセントとして測定されます。</li>
+                <li>出力は建物の窓×2種類、車両の窓×2種類、コンテナ、食器、ヘッドランプの7種類に分類されます。</li>
+            </ul>
+        </div>
+    </div>
+
+    {# 💡 ここに余白クラスを適用 #}
+    <div class="container py-2 content-padding-bottom"> 
+        <div class='row justify-content-center rounded'>
+        <div class='col-10 bg-primary text-white p-2'>
+            <form action="{% url 'predict:result' %}" method="POST" id="post-form">
+                {% csrf_token %}
+                
+                {# フィールドとエラー表示のロジックは省略せずにそのまま #}
+                
+                <div class='form-group m-1'>
+                    <label for='RI'>RI:屈折率:</label>
+                    <input type='number' step='0.00001' required name='RI' id='RI' class='form-control' placeholder='例:1.52101' value="{{ request.POST.RI|default:'' }}">
+                    {% for error in form.RI.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Na'>Na:ナトリウム:</label>
+                    <input type='number' step='0.01' required name='Na' id='Na' class='form-control' placeholder='例:13.46' value="{{ request.POST.Na|default:'' }}">
+                    {% for error in form.Na.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Mg'>Mg:マグネシウム:</label>
+                    <input type='number' step='0.01' required name='Mg' id='Mg' class='form-control' placeholder='例:4.49' value="{{ request.POST.Mg|default:'' }}">
+                    {% for error in form.Mg.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Al'>Al:アルミ:</label>
+                    <input type='number' step='0.01' required name='Al' id='Al' class='form-control' placeholder='例:1.10' value="{{ request.POST.Al|default:'' }}">
+                    {% for error in form.Al.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Si'>Si: ケイ素:</label>
+                    <input type='number' step='0.01' required name='Si' id='Si' class='form-control' placeholder='例:71.78' value="{{ request.POST.Si|default:'' }}">
+                    {% for error in form.Si.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='K'>K: カリウム:</label>
+                    <input type='number' step='0.01' required name='K' id='K' class='form-control' placeholder='例:0.06' value="{{ request.POST.K|default:'' }}">
+                    {% for error in form.K.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Ca'>Ca:カルシウム:</label>
+                    <input type='number' step='0.01' required name='Ca' id='Ca' class='form-control' placeholder='例:8.75' value="{{ request.POST.Ca|default:'' }}">
+                    {% for error in form.Ca.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>
+                
+                <div class='form-group m-1'>
+                    <label for='Ba'>Ba:バリウム:</label>
+                    <input type='number' step='0.01' required name='Ba' id='Ba' class='form-control' placeholder='例:0.00' value="{{ request.POST.Ba|default:'' }}">
+                    {% for error in form.Ba.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>           
+                
+                <div class='form-group m-1'>
+                    <label for='Fe'>Fe:鉄:</label>
+                    <input type='number' step='0.01' required name='Fe' id='Fe' class='form-control' placeholder='例:0.00' value="{{ request.POST.Fe|default:'' }}">
+                    {% for error in form.Fe.errors %}<p class="text-warning small my-0">{{ error }}</p>{% endfor %}
+                </div>     
+                
+                <div class='form-group m-2'>
+                    <button type='submit' class='btn btn btn-warning'>予測実行</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
