@@ -1,3 +1,9 @@
 postgresql-client
 libpq-dev
 build-essential
+gfortran          # Fortranコンパイラ (SciPyなどが要求)
+libblas-dev       # 線形代数ライブラリ (NumPy/SciPyなどが要求)
+liblapack-dev     # 線形代数ライブラリ (NumPy/SciPyなどが要求)
+libatlas-base-dev # BLAS/LAPACK実装
+python3-dev       # Pythonヘッダーファイル (コンパイルに必要)
+libfreetype6-dev  # フォント描画ライブラリ (Matplotlibなどが要求)
