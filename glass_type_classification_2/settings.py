@@ -28,8 +28,8 @@ SECRET_KEY = "django-insecure-6f=v)lmag+ln&3$5go&+6d2g1j=k%0jpl(nt9v6hh9qayj)k6b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['GLASS_TYPE_CLASSIFICATION_2.onrender.com', 'localhost', '127.0.0.1'] 
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['GLASS_TYPE_CLASSIFICATION_2.onrender.com', 'localhost', '127.0.0.1'] 
 
 # Application definition
 
